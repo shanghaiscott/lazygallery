@@ -1,0 +1,19 @@
+--- slimbox.css.orig	2008-09-20 20:53:58.857103804 -0400
++++ slimbox.css	2008-09-20 20:54:40.106020978 -0400
+@@ -59,6 +59,7 @@
+ 	text-align: left;
+ 	border: 10px solid #fff;
+ 	border-top-style: none;
++	padding: 10px;
+ }
+ 
+ #lbCloseLink {
+@@ -67,7 +68,7 @@
+ 	width: 66px;
+ 	height: 22px;
+ 	background: transparent url(closelabel.gif) no-repeat center;
+-	margin: 5px 0;
++	margin: 10px;
+ }
+ 
+ #lbCaption, #lbNumber {
