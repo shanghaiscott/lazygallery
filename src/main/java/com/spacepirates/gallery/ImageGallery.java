@@ -38,7 +38,7 @@ import com.drew.imaging.jpeg.JpegMetadataReader;
 import com.drew.metadata.Directory;
 import com.drew.metadata.Metadata;
 import com.drew.metadata.Tag;
-import com.drew.metadata.exif.ExifDirectory;
+import com.drew.metadata.exif.ExifSubIFDDirectory;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
@@ -499,9 +499,9 @@ public class ImageGallery implements java.io.Serializable {
           final Metadata metadata =
             JpegMetadataReader.readMetadata(image.getFile());
           final Directory exifDirectory =
-            metadata.getDirectory(ExifDirectory.class);
+            metadata.getFirstDirectoryOfType(ExifSubIFDDirectory.class);
           final int orientation =
-            exifDirectory.getInt(ExifDirectory.TAG_ORIENTATION);
+            exifDirectory.getInt(ExifSubIFDDirectory.TAG_ORIENTATION);
           if (orientation == 6) { // rotate 90 degress CW
             ImageUtils.rotateImage(image, 90);
           } else if (orientation == 8) { // rotate 90 degrees CCW (-90)
@@ -510,6 +510,7 @@ public class ImageGallery implements java.io.Serializable {
             ImageUtils.rotateImage(image, 180);
           }
         } catch (MetadataException ex) {
+        } catch (IOException ex) {
         } catch (JpegProcessingException ex) {
         }
       }
@@ -646,14 +647,14 @@ public class ImageGallery implements java.io.Serializable {
           if (metadata.getDirectoryCount() > 0) {
             image.setExifPresent(true);
             // iterate through metadata directories
-            Iterator directories = metadata.getDirectoryIterator();
+            Iterable<Directory> directories = metadata.getDirectories();
 
-            while (directories.hasNext()) {
-              Directory directory = (Directory) directories.next();
+            while (directories.iterator().hasNext()) {
+              Directory directory = (Directory) directories.iterator().next();
               // iterate through tags and print to System.out
-              Iterator tags = directory.getTagIterator();
-              while (tags.hasNext()) {
-                Tag tag = (Tag) tags.next();
+              Collection tags = directory.getTags();
+              while (tags.iterator().hasNext()) {
+                Tag tag = (Tag) tags.iterator().next();
                 output.write(tag + "\n");
               }
             }

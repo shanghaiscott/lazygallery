@@ -37,10 +37,14 @@ import javax.servlet.jsp.tagext.TagSupport;
 public class LazyGalleryTag extends TagSupport {
   /** Serialization UUID. */
   private static final long serialVersionUID = -3709946356519374907L;
-  /** Parameter for the name of the folder with the images. */
+  /** Parameter for the name of the folder with the imageRootDir. */
   private static final String P_IMAGES = "images";
   /** The gallery object. */
   private final HttpImageGallery gallery = new HttpImageGallery();
+  
+  private int thumbsPerRow = 5;
+  private boolean debug = false;
+  private String imageRootDir = "/";
 
   @Override
   public final int doStartTag() throws JspException {
@@ -62,5 +66,47 @@ public class LazyGalleryTag extends TagSupport {
       throw new JspException(e);
     }
     return SKIP_BODY;
+  }
+
+  /**
+   * @return the thumbsPerRow
+   */
+  public int getThumbsPerRow() {
+    return thumbsPerRow;
+  }
+
+  /**
+   * @param thumbsPerRow the thumbsPerRow to set
+   */
+  public void setThumbsPerRow(int thumbsPerRow) {
+    this.thumbsPerRow = thumbsPerRow;
+  }
+
+  /**
+   * @return the debug
+   */
+  public boolean isDebug() {
+    return debug;
+  }
+
+  /**
+   * @param debug the debug to set
+   */
+  public void setDebug(boolean debug) {
+    this.debug = debug;
+  }
+
+  /**
+   * @return the imageRootDir
+   */
+  public String getImageRootDir() {
+    return imageRootDir;
+  }
+
+  /**
+   * @param imageRootDir the imageRootDir to set
+   */
+  public void setImageRootDir(String imageRootDir) {
+    this.imageRootDir = imageRootDir;
   }
 }
